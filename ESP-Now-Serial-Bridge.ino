@@ -42,19 +42,19 @@
 #define BOARD1 // BOARD1 or BOARD2
 
 #ifdef BOARD1
-#define RECVR_MAC {0x7C, 0x9E, 0xBD, 0x47, 0x50, 0x30}  // replace with your board's address
+#define RECVR_MAC {0x94, 0xB9, 0x7E, 0xD9, 0xDD, 0xD4}  // replace with your board's address
 //#define BLINK_ON_SEND
 //#define BLINK_ON_SEND_SUCCESS
 #define BLINK_ON_RECV
 #else
-#define RECVR_MAC {0x94, 0xB9, 0x7E, 0xD2, 0xF7, 0x54}  // replace with your board's address
+#define RECVR_MAC {0x94, 0xB9, 0x7E, 0xE4, 0x8D, 0xFC}  // replace with your board's address
 //#define BLINK_ON_SEND
 #define BLINK_ON_SEND_SUCCESS
 //#define BLINK_ON_RECV
 #endif
 
 #define WIFI_CHAN  13 // 12-13 only legal in US in lower power mode, do not use 14
-#define BAUD_RATE  57600
+#define BAUD_RATE  115200
 #define TX_PIN     1 // default UART0 is pin 1 (shared by USB)
 #define RX_PIN     3 // default UART0 is pin 3 (shared by USB)
 #define SER_PARAMS SERIAL_8N1 // SERIAL_8N1: start/stop bits, no parity
@@ -75,6 +75,8 @@ uint8_t buf_recv[BUFFER_SIZE];
 uint8_t buf_send[BUFFER_SIZE];
 uint8_t buf_size = 0;
 uint32_t send_timeout = 0;
+
+esp_now_peer_info_t peerInfo;  // scope workaround for arduino-esp32 v2.0.1
 
 #if defined(DEBUG) || defined(BLINK_ON_SEND_SUCCESS)
 uint8_t led_status = 0;
@@ -146,7 +148,7 @@ void setup() {
   esp_now_register_send_cb(OnDataSent);
   #endif
   
-  esp_now_peer_info_t peerInfo;
+  // esp_now_peer_info_t peerInfo;  // scope workaround for arduino-esp32 v2.0.1
   memcpy(peerInfo.peer_addr, broadcastAddress, 6);
   peerInfo.channel = WIFI_CHAN;  
   peerInfo.encrypt = false;
