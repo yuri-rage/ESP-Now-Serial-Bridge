@@ -128,6 +128,9 @@ void setup() {
   #ifdef DEBUG
   Serial.print("ESP32 MAC Address: ");
   Serial.println(WiFi.macAddress());
+  String nice_mac = WiFi.macAddress();
+  nice_mac.replace(":", ", 0x");
+  Serial.println("nice_mac: {0x" + nice_mac + "} ");
   #endif
   
   if (esp_wifi_set_channel(WIFI_CHAN, WIFI_SECOND_CHAN_NONE) != ESP_OK) {
